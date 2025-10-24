@@ -29,7 +29,7 @@ These agents are orchestrated through a workflow system built with LangChain and
 ## Technology Stack
 
 - **Framework**: LangChain + LangGraph for workflow orchestration
-- **LLM Integration**: Open-source HuggingFace models (e.g., CodeLlama) for all agent tasks
+- **LLM Integration**: OpenAI (default) with support for Anthropic and other providers
 - **Programming Languages**: Python (core system)
 - **Version Control**: GitHub and GitLab API integration
 - **Configuration**: Environment variables and Pydantic settings
@@ -40,14 +40,15 @@ These agents are orchestrated through a workflow system built with LangChain and
 
 - Python 3.10 or higher
 - Git
-- GitHub/GitLab account (for version control integration)
+- OpenAI API key (required)
+- GitHub/GitLab account (optional, for version control integration)
 
 ### Setup
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/autonomous-dev-agent.git
-   cd autonomous-dev-agent
+   git clone https://github.com/manavanandani/Autonomous_Dev_Agent.git
+   cd Autonomous_Dev_Agent
    ```
 
 2. Create a virtual environment:
@@ -136,11 +137,14 @@ autonomous_dev_agent/
 │   │   └── interactive_learning.py
 │   ├── workflows/
 │   │   └── development_workflow.py
+│   ├── ui/
+│   │   └── app.py
 │   └── main.py
 ├── tests/
-├── docs/
-├── examples/
+├── .github/workflows/
 ├── requirements.txt
+├── pyproject.toml
+├── Makefile
 └── README.md
 ```
 
