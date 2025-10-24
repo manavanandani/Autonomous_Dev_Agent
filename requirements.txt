@@ -1,0 +1,13 @@
+langchain>=0.3.24
+langchain-core>=0.3.55
+langchain-experimental>=0.3.4
+langchain-community>=0.3.22
+langgraph>=0.3.32
+transformers>=4.40.0
+huggingface-hub>=0.23.0
+torch>=2.2.0
+pydantic>=2.11.3
+pydantic-settings>=2.9.1
+python-dotenv>=1.1.0
+requests>=2.32.3
+pytest>=7.4.0
