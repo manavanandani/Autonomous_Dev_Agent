@@ -1,75 +1,146 @@
-# Autonomous Software Development Agent
+# Autonomous Dev Agent# Autonomous Software Development Agent
 
-## Project Overview
 
-The Autonomous Software Development Agent is an AI-powered system that can autonomously plan, code, debug, and document software features based on natural language requirements. It combines the latest advances in code generation with agentic decision-making to create a comprehensive development pipeline.
+
+🤖 **AI-powered development with 5-phase workflow**## Project Overview
+
+
+
+## OverviewThe Autonomous Software Development Agent is an AI-powered system that can autonomously plan, code, debug, and document software features based on natural language requirements. It combines the latest advances in code generation with agentic decision-making to create a comprehensive development pipeline.
+
+A streamlined autonomous development agent that helps you generate code through a structured 5-phase process:
 
 ## Architecture
 
-The system is built using a multi-agent architecture with specialized agents for different parts of the software development process:
+- 🧠 **Planning** - Creates pseudocode and development plan
 
-1. **Planning Agent**: Analyzes natural language requirements and breaks them down into technical tasks
-2. **Coding Agent**: Generates code based on technical tasks and performs code reviews
+- 💻 **Code** - Generates clean, working Python code  The system is built using a multi-agent architecture with specialized agents for different parts of the software development process:
+
+- 🧪 **Test** - Coming soon
+
+- 🐛 **Debug** - Coming soon1. **Planning Agent**: Analyzes natural language requirements and breaks them down into technical tasks
+
+- 📚 **Document** - Generates comprehensive documentation2. **Coding Agent**: Generates code based on technical tasks and performs code reviews
+
 3. **Testing Agent**: Creates and executes tests for code validation
-4. **Debugging Agent**: Identifies and fixes issues in the code
+
+## Quick Start4. **Debugging Agent**: Identifies and fixes issues in the code
+
 5. **Documentation Agent**: Creates technical and user documentation
 
-These agents are orchestrated through a workflow system built with LangChain and LangGraph, which manages the state transitions and data flow between agents.
+### Local Development
 
-## Key Features
+```bashThese agents are orchestrated through a workflow system built with LangChain and LangGraph, which manages the state transitions and data flow between agents.
+
+# Clone the repository
+
+git clone <repository-url>## Key Features
+
+cd autonomous-dev-agent-main-2
 
 - **Natural Language Requirement Processing**: Convert user requirements in natural language to actionable technical tasks
-- **Autonomous Code Generation**: Generate high-quality code based on technical specifications
-- **Automated Testing**: Create and run tests to validate code functionality
+
+# Install dependencies- **Autonomous Code Generation**: Generate high-quality code based on technical specifications
+
+pip install -r requirements_deploy.txt- **Automated Testing**: Create and run tests to validate code functionality
+
 - **Intelligent Debugging**: Identify and fix issues in the code
-- **Comprehensive Documentation**: Generate both technical and user documentation
-- **Version Control Integration**: Connect with GitHub/GitLab for automated PR creation
+
+# Set environment variable for demo mode- **Comprehensive Documentation**: Generate both technical and user documentation
+
+export DRY_RUN=true- **Version Control Integration**: Connect with GitHub/GitLab for automated PR creation
+
 - **Interactive Learning**: Improve over time based on user feedback
 
-## Technology Stack
+# Run the application
+
+streamlit run autonomous_dev_agent/src/ui/main_app.py## Technology Stack
+
+```
 
 - **Framework**: LangChain + LangGraph for workflow orchestration
-- **LLM Integration**: OpenAI (default) with support for Anthropic and other providers
-- **Programming Languages**: Python (core system)
-- **Version Control**: GitHub and GitLab API integration
-- **Configuration**: Environment variables and Pydantic settings
 
-## Installation
+### Docker Deployment- **LLM Integration**: OpenAI (default) with support for Anthropic and other providers
 
-### Prerequisites
+```bash- **Programming Languages**: Python (core system)
 
-- Python 3.10 or higher
-- Git
-- OpenAI API key (required)
-- GitHub/GitLab account (optional, for version control integration)
+# Build the image- **Version Control**: GitHub and GitLab API integration
+
+docker build -t autonomous-dev-agent .- **Configuration**: Environment variables and Pydantic settings
+
+
+
+# Run the container## Installation
+
+docker run -p 8501:8501 autonomous-dev-agent
+
+```### Prerequisites
+
+
+
+### Streamlit Cloud Deployment- Python 3.10 or higher
+
+1. Push your code to GitHub- Git
+
+2. Connect to Streamlit Cloud- OpenAI API key (required)
+
+3. Set environment variable: `DRY_RUN = true`- GitHub/GitLab account (optional, for version control integration)
+
+4. Deploy!
 
 ### Setup
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/manavanandani/Autonomous_Dev_Agent.git
-   cd Autonomous_Dev_Agent
-   ```
+## Features
+
+- ✅ **Simple Interface** - Clean, intuitive UI1. Clone the repository:
+
+- ✅ **Phase Visualization** - Visual progress tracking   ```bash
+
+- ✅ **Code Generation** - AI-powered code creation   git clone https://github.com/manavanandani/Autonomous_Dev_Agent.git
+
+- ✅ **Documentation** - Automatic documentation generation   cd Autonomous_Dev_Agent
+
+- ✅ **Download Options** - Export code and docs   ```
+
+- 🚧 **Testing & Debugging** - Coming in future versions
 
 2. Create a virtual environment:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
 
-3. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+## Usage Example   ```bash
 
-4. Create a `.env` file with your OpenAI key (required):
-   ```
+1. Enter: "write a code to add 2 numbers"   python -m venv venv
+
+2. Watch the Planning Agent create pseudocode   source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+3. See the Code Agent generate implementation   ```
+
+4. Get comprehensive documentation
+
+5. Download your complete solution3. Install dependencies:
+
+   ```bash
+
+## Tech Stack   pip install -r requirements.txt
+
+- **Frontend**: Streamlit   ```
+
+- **Backend**: Python, Pydantic
+
+- **AI**: LangChain (with DRY_RUN mode for demo)4. Create a `.env` file with your OpenAI key (required):
+
+- **Deployment**: Docker, Streamlit Cloud   ```
+
    OPENAI_API_KEY=your_openai_api_key
-   # Optional VCS
-   GITHUB_TOKEN=your_github_token
+
+## Environment Variables   # Optional VCS
+
+- `DRY_RUN=true` - Enables demo mode without API keys   GITHUB_TOKEN=your_github_token
+
    GITHUB_USERNAME=your_github_username
-   GITHUB_REPO=your_github_repo
-   ```
+
+---   GITHUB_REPO=your_github_repo
+
+Made with ❤️ by the Autonomous Dev Agent Team   ```
 
 ## Usage
 

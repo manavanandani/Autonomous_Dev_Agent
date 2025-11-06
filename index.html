@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Autonomous Dev Agent (Static)</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial; margin: 0; padding: 2rem; color: #222 }
+    header { text-align: center; margin-bottom: 1.5rem }
+    h1 { margin: 0; font-size: 2.2rem }
+    p.lead { color: #666 }
+    .phase-row { display:flex; align-items:center; justify-content:center; gap:12px; margin: 1.2rem 0 }
+    .phase { padding:10px 14px; border-radius:999px; background:#e9ecef; color:#333; display:flex; gap:8px; align-items:center; font-weight:600 }
+    .phase.active { background:#0d6efd; color:white }
+    .phase.completed { background:#198754; color:white }
+    .phase.coming { background:#ffc107; color:#212529 }
+    .arrow { font-size: 1.2rem; color:#999 }
+    .container { max-width:900px; margin: 0 auto }
+    textarea { width:100%; min-height:100px; padding:12px; font-size:1rem; border-radius:8px; border:1px solid #ddd }
+    .btn { padding:10px 14px; border-radius:8px; cursor:pointer; background:#0d6efd; color:white; border:none }
+    .btn.secondary { background:#6c757d }
+    pre.box { background:#f8f9fa; border:1px solid #eee; padding:12px; border-radius:8px; overflow:auto }
+    .flex { display:flex; gap:8px }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🤖 Autonomous Dev Agent</h1>
+      <p class="lead">Simple client-side demo — phases: Planning → Code → Test → Debug → Document</p>
+    </header>
+
+    <div id="phases" class="phase-row" aria-hidden="false">
+      <!-- phases injected -->
+    </div>
+
+    <section>
+      <label for="req">Enter your requirement</label>
+      <textarea id="req" placeholder="e.g., write a code to add 2 numbers"></textarea>
+      <div style="margin-top:10px" class="flex">
+        <button id="startBtn" class="btn">🚀 Start</button>
+        <button id="resetBtn" class="btn secondary">Reset</button>
+      </div>
+    </section>
+
+    <hr style="margin:1.2rem 0">
+
+    <section>
+      <h3>🧠 Planning (Pseudocode)</h3>
+      <pre id="pseudocode" class="box">(no plan yet)</pre>
+    </section>
+
+    <section>
+      <h3>💻 Code</h3>
+      <pre id="code" class="box">(no code yet)</pre>
+      <div style="margin-top:8px" class="flex">
+        <button id="docBtn" class="btn secondary">📚 Generate Documentation</button>
+        <a id="downloadCode" style="display:inline-block; margin-left:auto;" class="btn" href="#">📁 Download Code</a>
+      </div>
+    </section>
+
+    <section>
+      <h3>📚 Documentation</h3>
+      <pre id="docs" class="box">(no documentation yet)</pre>
+      <div style="margin-top:8px" class="flex">
+        <a id="downloadDocs" class="btn" href="#">📄 Download Docs</a>
+      </div>
+    </section>
+
+    <footer style="text-align:center; margin-top:1.5rem; color:#888">Made with ❤️ — Client-side demo, no servers required (works on Vercel static hosting)</footer>
+  </div>
+
+  <script>
+    // Simple client-side logic that mirrors the Python heuristics used previously.
+    const phases = [
+      {key:'planning', label:'🧠 Planning'},
+      {key:'coding', label:'💻 Code'},
+      {key:'testing', label:'🧪 Test'},
+      {key:'debugging', label:'🐛 Debug'},
+      {key:'documentation', label:'📚 Document'}
+    ];
+
+    const state = { step:'input', requirement:'', pseudocode:'', code:'', docs:'', completed: [] };
+
+    function renderPhases(){
+      const el = document.getElementById('phases'); el.innerHTML='';
+      phases.forEach((p,i)=>{
+        const div = document.createElement('div');
+        let status = 'pending';
+        if(state.completed.includes(p.key)) status='completed';
+        else if(state.step===p.key) status='active';
+        else if(['testing','debugging'].includes(p.key)) status='coming';
+        div.className = 'phase ' + (status==='active'? 'active': status==='completed' ? 'completed' : status==='coming' ? 'coming' : '');
+        div.textContent = p.label;
+        el.appendChild(div);
+        if(i < phases.length-1){ const a = document.createElement('div'); a.className='arrow'; a.textContent='→'; el.appendChild(a); }
+      });
+    }
+
+    function createSimplePseudocode(req){
+      const r = req.toLowerCase();
+      if(r.includes('add') && r.includes('number')){
+        return `PSEUDOCODE:\n1. FUNCTION add_numbers(a, b)\n2.     result = a + b\n3.     RETURN result\n4. END FUNCTION\n\n5. INPUT: Get two numbers from user\n6. CALL add_numbers with the inputs\n7. DISPLAY the result`;
+      }
+      if(r.includes('calculator')){
+        return `PSEUDOCODE:\n1. DEFINE Calculator class\n2.     METHOD add(a, b): RETURN a + b\n3.     METHOD subtract(a, b): RETURN a - b\n4.     METHOD multiply(a, b): RETURN a * b\n5.     METHOD divide(a, b): RETURN a / b\n6. END CLASS\n\n7. CREATE calculator instance\n8. PROVIDE user interface for operations`;
+      }
+      if(r.includes('fibonacci')){
+        return `PSEUDOCODE:\n1. FUNCTION fibonacci(n)\n2.     IF n <= 1: RETURN n\n3.     RETURN fibonacci(n-1) + fibonacci(n-2)\n4. END FUNCTION\n\n5. INPUT: Get number from user\n6. CALL fibonacci function\n7. DISPLAY the sequence`;
+      }
+      return `PSEUDOCODE:\n1. ANALYZE requirement: "${req}"\n2. BREAK DOWN into smaller tasks\n3. DEFINE main function\n4. IMPLEMENT core logic\n5. ADD error handling\n6. TEST the solution\n7. RETURN final result`;
+    }
+
+    function generateSimpleCode(req){
+      const r = req.toLowerCase();
+      if(r.includes('add') && r.includes('number')){
+        return `def add_numbers(a, b):\n    \"\"\"Add two numbers and return the result\"\"\"\n    return a + b\n\ndef main():\n    \"\"\"Main function to add two numbers\"\"\"\n    try:\n        num1 = float(input(\"Enter first number: \"))\n        num2 = float(input(\"Enter second number: \"))\n        result = add_numbers(num1, num2)\n        print(f\"The sum of {num1} and {num2} is: {result}\")\n    except ValueError:\n        print(\"Error: Please enter valid numbers\")\n    except Exception as e:\n        print(f\"An error occurred: {e}\")\n\nif __name__ == \"__main__\":\n    main()`;
+      }
+      if(r.includes('calculator')){
+        return `class Calculator:\n    def add(self,a,b): return a+b\n    def subtract(self,a,b): return a-b\n    def multiply(self,a,b): return a*b\n    def divide(self,a,b):\n        if b==0: raise ValueError(\"Cannot divide by zero\")\n        return a/b\n\n# Usage example\nif __name__ == '__main__':\n    calc=Calculator()\n    print(calc.add(2,3))`;
+      }
+      return `# Implementation scaffold for: ${req}\n\n# TODO: implement this based on the generated pseudocode`;
+    }
+
+    function generateDocumentation(req, code){
+      const r = req.toLowerCase();
+      if(r.includes('add') && r.includes('number')){
+        return `# Add Numbers Function Documentation\n\n## Overview\nThis module provides a simple function to add two numbers with error handling.\n\n## Functions\n\n### add_numbers(a, b)\nAdds two numbers and returns the result.\n\n## Usage\nresult = add_numbers(5,3)\n`;
+      }
+      if(r.includes('calculator')){
+        return `# Calculator Documentation\n\nSimple calculator with add/sub/mul/div functions.\n`;
+      }
+      return `# Documentation for: ${req}\n\nThis file describes the implementation and usage.`;
+    }
+
+    function setText(id, txt){ document.getElementById(id).textContent = txt; }
+
+    function download(filename, text){
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([text], {type:'text/plain'}));
+      a.download = filename; document.body.appendChild(a); a.click(); a.remove();
+    }
+
+    // UI wiring
+    document.getElementById('startBtn').addEventListener('click', ()=>{
+      const req = document.getElementById('req').value.trim();
+      if(!req){ alert('Please enter a requirement'); return; }
+      state.requirement = req;
+      state.step = 'planning'; renderPhases();
+      state.pseudocode = createSimplePseudocode(req); setText('pseudocode', state.pseudocode);
+      // move to coding
+      state.completed.push('planning'); state.step='coding'; renderPhases();
+      state.code = generateSimpleCode(req); setText('code', state.code);
+      // mark coding completed
+      state.completed.push('coding'); renderPhases();
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', ()=>{
+      state.step='input'; state.requirement=''; state.pseudocode=''; state.code=''; state.docs=''; state.completed=[];
+      document.getElementById('req').value=''; setText('pseudocode','(no plan yet)'); setText('code','(no code yet)'); setText('docs','(no documentation yet)'); renderPhases();
+    });
+
+    document.getElementById('docBtn').addEventListener('click', ()=>{
+      if(!state.code){ alert('Generate code first'); return; }
+      state.step='documentation'; renderPhases();
+      state.docs = generateDocumentation(state.requirement, state.code); setText('docs', state.docs);
+      state.completed.push('documentation'); renderPhases();
+    });
+
+    document.getElementById('downloadCode').addEventListener('click', (e)=>{ e.preventDefault(); if(!state.code){ alert('No code to download'); return; } download('generated_code.py', state.code); });
+    document.getElementById('downloadDocs').addEventListener('click', (e)=>{ e.preventDefault(); if(!state.docs){ alert('No docs to download'); return; } download('documentation.md', state.docs); });
+
+    // initial render
+    renderPhases();
+  </script>
+</body>
+</html>

@@ -21,3 +21,5 @@ no_implicit_optional = true
 [tool.pytest.ini_options]
 addopts = "-q --maxfail=1 --disable-warnings"
 
+
+

@@ -1,13 +1,14 @@
 """
 Utility functions for working with LLMs in the Autonomous Software Development Agent.
 """
+import os
 from typing import Dict, Any, List, Optional
 from types import SimpleNamespace
 from langchain_openai import ChatOpenAI
 from langchain_anthropic import ChatAnthropic
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser, JsonOutputParser
-from langchain_core.pydantic_v1 import BaseModel, Field
+from pydantic import BaseModel, Field
 
 from autonomous_dev_agent.src.config.config import settings
 
@@ -26,7 +27,8 @@ def get_openai_llm(model: Optional[str] = None, temperature: Optional[float] = N
     model = model or settings.DEFAULT_LLM_MODEL
     temperature = temperature if temperature is not None else settings.TEMPERATURE
     
-    if settings.DRY_RUN:
+    # Check both settings and direct OS environment for DRY_RUN
+    if settings.DRY_RUN or os.getenv("DRY_RUN", "false").lower() == "true":
         return SimpleNamespace(dry_run=True)
     if not settings.OPENAI_API_KEY:
         raise RuntimeError("OPENAI_API_KEY is not set. Provide it in .env or enable DRY_RUN to skip external calls.")

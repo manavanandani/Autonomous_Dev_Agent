@@ -33,7 +33,7 @@ class Settings(BaseSettings):
     LOG_LEVEL: str = "INFO"
     TEMPERATURE: float = 0.2
     MAX_TOKENS: int = 4096
-    DRY_RUN: bool = False
+    DRY_RUN: bool = os.getenv("DRY_RUN", "false").lower() == "true"
     
     # Agent settings
     AGENT_MEMORY_SIZE: int = 10

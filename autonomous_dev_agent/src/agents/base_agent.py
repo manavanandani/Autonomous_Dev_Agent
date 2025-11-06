@@ -1,6 +1,7 @@
 """
 Base agent class for the Autonomous Software Development Agent.
 """
+import logging
 from typing import Dict, Any, List, Optional
 from langchain_core.agents import AgentAction, AgentFinish
 from langchain_core.messages import BaseMessage
@@ -25,6 +26,7 @@ class BaseAgent:
         """
         self.agent_id = agent_id
         self.agent_type = agent_type
+        self.logger = logging.getLogger(f"{__name__}.{agent_type}")
         self.state = AgentState(
             agent_id=agent_id,
             agent_type=agent_type,
